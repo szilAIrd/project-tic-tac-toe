@@ -26,7 +26,32 @@ const gameBoard = (function(){
 })();
 
 const gameController = (function(){
-    // let dsds = '';
+    let activePlayer
+
+    const playGame = () => {
+      
+      gameBoard.resetBoard()
+
+      while(gameController.checkStatus(gameBoard)==false && gameController.countRound(gameBoard)<10){
+        
+      // User selects action> get input from user which tile is selcted
+      // input need from GUI: selected tiles
+        let tileI = prompt("What is tile row number?")
+        let tileJ = prompt("What is tile column number?")
+        gameBoard.setMark(gameController.setActivePlayer(),tileI,tileJ)
+
+        if (gameController.checkStatus(gameBoard)=='X'){
+          return ('The winner is X')
+        } 
+        else if (gameController.checkStatus(gameBoard)=='X'){
+          return ('The winner is O')
+        }
+        console.log(gameBoard.Status)
+        
+      }
+      return  "It's a draw!"
+    }
+
     const rollFirstPlayer = (user1, user2) => {
         let firstPlayer
         randomNum = Math.random() < 0.5 ? 0 : 1;
@@ -45,25 +70,25 @@ const gameController = (function(){
 
     }
 
-    const setActivePlayer = (activePlayer) => {
+    const setActivePlayer = () => {
         // let activePlayer
-        let activePlayer
+        
 
-        if (activePlayer ==''){
-            activePlayer = 'X'
+        if (gameController.countRound(gameBoard)==0){
+          activePlayer = 'X'  
         }
         else if (activePlayer =='X'){
             activePlayer = 'O'
         }
-        // else {
-        //     activePlayer = 'X'
-        // }
+        else if (activePlayer =='O'){
+            activePlayer = 'X'
+        }
         return activePlayer
     }
         
     const countRound = (gameBoard) => {
         let count = 0;
-        for (let row of gameBoard) {
+        for (let row of gameBoard.Status) {
           for (let cell of row) {
             if (cell !== '') {
               count++;
@@ -105,9 +130,9 @@ const gameController = (function(){
           }
         
           // No winner
-          return ["No winner"];
+          return false
         }
-    return {checkStatus, countRound, rollFirstPlayer, setActivePlayer}
+    return {checkStatus, countRound, rollFirstPlayer, setActivePlayer, playGame}
 
 })();
 
