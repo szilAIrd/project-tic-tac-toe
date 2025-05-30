@@ -39,8 +39,9 @@ const gameController = (function(){
     const playGame = () => {
       let gameMsg
       gameBoard.resetBoard()
-
-      while(gameController.countRound(gameBoard)<10){
+      let roundCntr = gameController.countRound(gameBoard);
+      while(roundCntr<9){
+        console.log(`Round ${roundCntr+1}`)
         // gameController.checkStatus(gameBoard)==false
       // User selects action> get input from user which tile is selcted
       // input need from GUI: selected tiles
@@ -65,7 +66,8 @@ const gameController = (function(){
           return ('The winner is O')
         }
         else {
-          gameMsg = 'There is no winner'
+          roundCntr = gameController.countRound(gameBoard)
+          return gameMsg = 'There is no winner'
           // return ('No winner!')
         }
         // console.log(gameBoard.Status)
@@ -78,7 +80,7 @@ const gameController = (function(){
       let validPick = false
       while (validPick==false) {
 
-        if (gameBoard.Status[tileI][tileJ]!=''){
+        if (tileI>3 || tileI<0 || tileJ>3 ||tileJ<0 || gameBoard.Status[tileI][tileJ]!=''){
           
           alert('Invalid pick! Choose another tile!')
           tileI = parseInt(prompt("What is tile row number?"))
