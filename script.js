@@ -19,9 +19,17 @@ const gameBoard = (function(){
         // }
         // else{
             Status[tileI][tileJ]=mark
+            return Status
         // }
     };
-    return {Status, setMark, resetBoard}
+    // return {Status, setMark, resetBoard}
+    return {
+      get Status() {
+        return Status;
+      },
+      setMark,
+      resetBoard
+    };
 
 })();
 
@@ -29,27 +37,62 @@ const gameController = (function(){
     let activePlayer
 
     const playGame = () => {
-      
+      let gameMsg
       gameBoard.resetBoard()
 
-      while(gameController.checkStatus(gameBoard)==false && gameController.countRound(gameBoard)<10){
-        
+      while(gameController.countRound(gameBoard)<10){
+        // gameController.checkStatus(gameBoard)==false
       // User selects action> get input from user which tile is selcted
       // input need from GUI: selected tiles
-        let tileI = prompt("What is tile row number?")
-        let tileJ = prompt("What is tile column number?")
-        gameBoard.setMark(gameController.setActivePlayer(),tileI,tileJ)
+      activePlayer = gameController.setActivePlayer(gameBoard)
+      console.warn(`It is ${activePlayer}'s turn`);
+      
+        //  Select tile and check if it is free
+        let tileI = parseInt(prompt("What is tile row number?"))
+        let tileJ = parseInt(prompt("What is tile column number?"))
 
+        gameController.validatePick(gameBoard, tileI, tileJ)
+                       
+        
+        gameBoard.setMark(activePlayer,tileI,tileJ)
+        console.log(gameBoard.Status)
         if (gameController.checkStatus(gameBoard)=='X'){
+          gameMsg = 'The winner is X'
           return ('The winner is X')
         } 
-        else if (gameController.checkStatus(gameBoard)=='X'){
+        else if (gameController.checkStatus(gameBoard)=='O'){
+          gameMsg = 'The winner is O'
           return ('The winner is O')
         }
-        console.log(gameBoard.Status)
+        else {
+          gameMsg = 'There is no winner'
+          // return ('No winner!')
+        }
+        // console.log(gameBoard.Status)
         
       }
-      return  "It's a draw!"
+      return gameMsg
+    }
+
+    const validatePick = (gameBoard, tileI, tileJ) => {
+      let validPick = false
+      while (validPick==false) {
+
+        if (gameBoard.Status[tileI][tileJ]!=''){
+          
+          alert('Invalid pick! Choose another tile!')
+          tileI = parseInt(prompt("What is tile row number?"))
+          tileJ = parseInt(prompt("What is tile column number?"))
+        }
+        else {
+          validPick=true
+        }
+      }
+      alert('Valid pick!')
+      pickValidity = validPick
+      validPick = false
+    return pickValidity
+  
     }
 
     const rollFirstPlayer = (user1, user2) => {
@@ -70,7 +113,7 @@ const gameController = (function(){
 
     }
 
-    const setActivePlayer = () => {
+    const setActivePlayer = (gameBoard) => {
         // let activePlayer
         
 
@@ -82,6 +125,9 @@ const gameController = (function(){
         }
         else if (activePlayer =='O'){
             activePlayer = 'X'
+        }
+        else {
+          activePlayer = 'X'
         }
         return activePlayer
     }
@@ -132,7 +178,7 @@ const gameController = (function(){
           // No winner
           return false
         }
-    return {checkStatus, countRound, rollFirstPlayer, setActivePlayer, playGame}
+    return {checkStatus, countRound, rollFirstPlayer, setActivePlayer, playGame, validatePick}
 
 })();
 
