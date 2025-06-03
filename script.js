@@ -41,7 +41,7 @@ const gameController = (function(){
       gameBoard.resetBoard()
       let roundCntr = gameController.countRound(gameBoard);
       while(roundCntr<9){
-        console.log(`Round ${roundCntr+1}`)
+      console.log(`Round ${roundCntr+1}`)
         // gameController.checkStatus(gameBoard)==false
       // User selects action> get input from user which tile is selcted
       // input need from GUI: selected tiles
@@ -57,6 +57,8 @@ const gameController = (function(){
         
         gameBoard.setMark(activePlayer,tileI,tileJ)
         console.log(gameBoard.Status)
+        roundCntr = gameController.countRound(gameBoard)
+        console.log(roundCntr)
         if (gameController.checkStatus(gameBoard)=='X'){
           gameMsg = 'The winner is X'
           return ('The winner is X')
@@ -65,10 +67,13 @@ const gameController = (function(){
           gameMsg = 'The winner is O'
           return ('The winner is O')
         }
-        else {
-          roundCntr = gameController.countRound(gameBoard)
-          return gameMsg = 'There is no winner'
+        else if (gameController.checkStatus(gameBoard)==false && roundCntr==9){
+          
+          return gameMsg = 'Draw'
           // return ('No winner!')
+        }
+        else {
+          console.log("no winner, continue!")
         }
         // console.log(gameBoard.Status)
         
