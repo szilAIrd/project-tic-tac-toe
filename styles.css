@@ -8,5 +8,7 @@ body{
 .box{
     background-color: grey;
     border-radius: 8px;
+    text-align: center;
+    font-size: 72px;
 
 }

@@ -50,9 +50,51 @@ const gameController = (function(){
       console.warn(`It is ${activePlayer}'s turn`);
       
         //  Select tile and check if it is free
+        let userAction = await waitForUserAction()
+        let tileI
+        let tileJ
 
-        let tileI = parseInt(prompt("What is tile row number?"))
-        let tileJ = parseInt(prompt("What is tile column number?"))
+        userAction.event.target.textContent = activePlayer
+
+        if(userAction.event.target.id==0){
+          tileI = 0;
+          tileJ = 0;
+        }
+        else if (userAction.event.target.id==1){
+          tileI = 0;
+          tileJ = 1;
+        }
+        else if (userAction.event.target.id==2){
+          tileI = 0;
+          tileJ = 2;
+        }
+        else if (userAction.event.target.id==3){
+          tileI = 1;
+          tileJ = 0;
+        }
+        else if (userAction.event.target.id==4){
+          tileI = 1;
+          tileJ = 1;
+        }
+        else if (userAction.event.target.id==5){
+          tileI = 1;
+          tileJ = 2;
+        }
+        else if (userAction.event.target.id==6){
+          tileI = 2;
+          tileJ = 0;
+        }
+        else if (userAction.event.target.id==7){
+          tileI = 2;
+          tileJ = 1;
+        }
+        else if (userAction.event.target.id==8){
+          tileI = 2;
+          tileJ = 2;
+        }
+
+        // let tileI = parseInt(prompt("What is tile row number?"))
+        // let tileJ = parseInt(prompt("What is tile column number?"))
 
         gameController.validatePick(gameBoard, tileI, tileJ)
                        
@@ -219,7 +261,8 @@ const createGui= (function(){
     const createDom = ()=> {
       for (let i = 0; i < 9; i++) {
         const div = document.createElement('div'); // Create a new div
-        div.className = 'box';                     // Assign a class
+        div.className = 'box';  // Assign a class
+        div.id = `${i}`                   
         // div.textContent = `Div #${i + 1}`;         // Optional: Add text content
         document.body.appendChild(div);            // Append to body
         div.addEventListener("click", ()=>{
@@ -234,3 +277,11 @@ return {createDom}
 
   // 1. player starts game with play button -> this calls gameController.playGame()
   // 2. playGamer needs the input from the user to select a box (element in the matrix)> user clicks and that calls set mark
+
+  function waitForUserAction(){
+
+    return new Promise(resolve => {this.addEventListener("click", (event)=> {resolve({
+      event
+
+    });}, {once: true})
+  })}
