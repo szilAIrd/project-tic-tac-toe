@@ -1,0 +1,12 @@
+body{
+    display: grid;
+    grid-template-columns: 200px 200px 200px;
+    grid-template-rows: 200px 200px 200px;
+    gap: 16px;
+}
+
+.box{
+    background-color: grey;
+    border-radius: 8px;
+
+}

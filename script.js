@@ -36,7 +36,8 @@ const gameBoard = (function(){
 const gameController = (function(){
     let activePlayer
 
-    const playGame = () => {
+    async function playGame(){
+      
       let gameMsg
       gameBoard.resetBoard()
       let roundCntr = gameController.countRound(gameBoard);
@@ -49,6 +50,7 @@ const gameController = (function(){
       console.warn(`It is ${activePlayer}'s turn`);
       
         //  Select tile and check if it is free
+
         let tileI = parseInt(prompt("What is tile row number?"))
         let tileJ = parseInt(prompt("What is tile column number?"))
 
@@ -62,6 +64,7 @@ const gameController = (function(){
         if (gameController.checkStatus(gameBoard)=='X'){
           gameMsg = 'The winner is X'
           return ('The winner is X')
+          // gameActive = false
         } 
         else if (gameController.checkStatus(gameBoard)=='O'){
           gameMsg = 'The winner is O'
@@ -185,7 +188,7 @@ const gameController = (function(){
           // No winner
           return false
         }
-    return {checkStatus, countRound, rollFirstPlayer, setActivePlayer, playGame, validatePick}
+    return {activePlayer,checkStatus, countRound, rollFirstPlayer, setActivePlayer, playGame, validatePick}
 
 })();
 
@@ -211,3 +214,23 @@ function createPlayer(name){
     return {playerName, playersOrder}
 
 }
+
+const createGui= (function(){
+    const createDom = ()=> {
+      for (let i = 0; i < 9; i++) {
+        const div = document.createElement('div'); // Create a new div
+        div.className = 'box';                     // Assign a class
+        // div.textContent = `Div #${i + 1}`;         // Optional: Add text content
+        document.body.appendChild(div);            // Append to body
+        div.addEventListener("click", ()=>{
+          div.textContent = activePlayer;
+        })
+      }
+    }
+return {createDom}
+  })()
+
+  createGui.createDom()
+
+  // 1. player starts game with play button -> this calls gameController.playGame()
+  // 2. playGamer needs the input from the user to select a box (element in the matrix)> user clicks and that calls set mark
